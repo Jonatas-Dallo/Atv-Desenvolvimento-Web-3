@@ -61,10 +61,12 @@ public class AutomanagerApplication{
 			cliente.setEndereco(endereco);
 
 			Documento rg = new Documento();
+			rg.setDataEmissao(new Date());
 			rg.setTipo(TipoDocumento.RG);
 			rg.setNumero("1500");
 
 			Documento cpf = new Documento();
+			cpf.setDataEmissao(new Date());
 			cpf.setTipo(TipoDocumento.CPF);
 			cpf.setNumero("00000000001");
 
