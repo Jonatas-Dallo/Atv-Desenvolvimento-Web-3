@@ -2,14 +2,14 @@ package com.autobots.automanager.modelos;
 
 import java.util.List;
 
-import com.autobots.automanager.entidades.Documento;
+import com.autobots.automanager.entidades.*;
 
 public class DocumentoAtualizador {
 	private StringVerificadorNulo verificador = new StringVerificadorNulo();
 
 	public void atualizar(Documento documento, Documento atualizacao) {
 		if (atualizacao != null) {
-			if (!verificador.verificar(atualizacao.getTipo())) {
+			if (!verificador.verificar(atualizacao.getTipo().toString())) {
 				documento.setTipo(atualizacao.getTipo());
 			}
 			if (!verificador.verificar(atualizacao.getNumero())) {

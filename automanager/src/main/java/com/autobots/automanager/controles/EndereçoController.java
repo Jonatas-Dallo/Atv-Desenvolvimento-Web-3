@@ -1,10 +1,10 @@
 package com.autobots.automanager.controles;
 
 import com.autobots.automanager.entidades.Endereco;
-import com.autobots.automanager.modelos.AdicionadorLinkEndereço;
 import com.autobots.automanager.modelos.EnderecoAtualizador;
-import com.autobots.automanager.modelos.EndereçoSelecionar;
 import com.autobots.automanager.repositorios.EndereçoRepositorio;
+import com.autobots.automanager.service.EndereçoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +17,9 @@ import java.util.List;
 public class EndereçoController{
     @Autowired
     private EndereçoRepositorio repositorio;
-
-    @Autowired
-    private EndereçoSelecionar selecionar;
     
     @Autowired
-    private AdicionadorLinkEndereço adicionadorLink;
+    private EndereçoService service;
 
     @GetMapping("/enderecos")
     public ResponseEntity<List<Endereco>> ObterEnderecos(){
@@ -31,7 +28,7 @@ public class EndereçoController{
             ResponseEntity<List<Endereco>> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return resposta;
         } else {
-        	adicionadorLink.adicionarLink(enderecos);
+        	service.adicionarLink(enderecos);
             ResponseEntity<List<Endereco>> resposta = new ResponseEntity<>(enderecos, HttpStatus.FOUND);
             return resposta;
         }
@@ -40,12 +37,12 @@ public class EndereçoController{
     @GetMapping("/endereco/{id}")
     public ResponseEntity<Endereco> ObterEndereco(@PathVariable Long id){
         List<Endereco> enderecos = repositorio.findAll();
-        Endereco endereco = selecionar.selecionar(enderecos, id);
+        Endereco endereco = service.selecionar(enderecos, id);
         if (endereco == null) {
             ResponseEntity<Endereco> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return resposta;
         } else {
-            adicionadorLink.adicionarLink(endereco);
+        	service.adicionarLink(endereco);
             ResponseEntity<Endereco> resposta = new ResponseEntity<Endereco>(endereco, HttpStatus.FOUND);
             return resposta;
         }

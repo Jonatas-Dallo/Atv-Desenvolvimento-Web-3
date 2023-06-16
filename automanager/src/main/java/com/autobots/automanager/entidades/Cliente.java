@@ -15,12 +15,14 @@ import javax.persistence.OneToOne;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
+@Entity
 @Getter
 @Setter
-@Entity
 public class Cliente extends RepresentationModel<Cliente>{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +41,4 @@ public class Cliente extends RepresentationModel<Cliente>{
 	private Endereco endereco;
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones = new ArrayList<>();
-
 }

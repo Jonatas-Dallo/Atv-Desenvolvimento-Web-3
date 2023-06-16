@@ -18,9 +18,8 @@ import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.entidades.Documento;
 import com.autobots.automanager.repositorios.ClienteRepositorio;
 import com.autobots.automanager.repositorios.DocumentoRepositorio;
-import com.autobots.automanager.modelos.AdicionadorLinkDocumento;
+import com.autobots.automanager.service.DocumentoService;
 import com.autobots.automanager.modelos.DocumentoAtualizador;
-import com.autobots.automanager.modelos.DocumentoSelecionar;
 
 @RestController
 @RequestMapping("/documento")
@@ -30,10 +29,7 @@ public class DocumentoController {
 	private DocumentoRepositorio repositorio;
 	
 	@Autowired
-	private DocumentoSelecionar selecionar;
-	
-	@Autowired
-	private AdicionadorLinkDocumento adicionadorLink;
+	private DocumentoService service ;
 	
 	@GetMapping("/documentos")
 	public ResponseEntity<List<Documento>> ObterDocumentos(){
@@ -42,21 +38,21 @@ public class DocumentoController {
             ResponseEntity<List<Documento>> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return resposta;
         } else {
-            adicionadorLink.adicionarLink(documentos);
+        	service.adicionarLink(documentos);
             ResponseEntity<List<Documento>> resposta = new ResponseEntity<>(documentos, HttpStatus.FOUND);
             return resposta;
         }
 	}
 	
 	@GetMapping("/documento/{id}")
-	public ResponseEntity<Documento> ObterDocumento(@PathVariable long id){
+	public ResponseEntity<Documento> ObterDocumento(@PathVariable Long id){
         List<Documento> documentos = repositorio.findAll();
-        Documento documento =  selecionar.selecionar(documentos, id);
+        Documento documento =  service.selecionar(documentos, id);
         if (documento == null) {
             ResponseEntity<Documento> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return resposta;
         } else {
-            adicionadorLink.adicionarLink(documento);
+        	service.adicionarLink(documento);
             ResponseEntity<Documento> resposta = new ResponseEntity<Documento>(documento, HttpStatus.FOUND);
             return resposta;
         }
@@ -72,7 +68,7 @@ public class DocumentoController {
         return new ResponseEntity<>(status);
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> AtualizarDocumento(@RequestBody Documento atualizacao) {
         HttpStatus status = HttpStatus.CONFLICT;
         Documento documento = repositorio.getById(atualizacao.getId());

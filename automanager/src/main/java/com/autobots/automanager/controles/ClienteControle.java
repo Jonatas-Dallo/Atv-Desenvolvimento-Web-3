@@ -14,29 +14,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.autobots.automanager.entidades.Cliente;
-import com.autobots.automanager.modelos.AdicionadorLinkCliente;
 import com.autobots.automanager.modelos.ClienteAtualizador;
-import com.autobots.automanager.modelos.ClienteSelecionador;
 import com.autobots.automanager.repositorios.ClienteRepositorio;
+import com.autobots.automanager.service.ClienteService;
 
 @RestController
 public class ClienteControle {
+	
 	@Autowired
 	private ClienteRepositorio repositorio;
+	
 	@Autowired
-	private ClienteSelecionador selecionador;
-	@Autowired
-	private AdicionadorLinkCliente adicionadorLink;
+	private ClienteService service;
 
 	@GetMapping("/cliente/{id}")
 	public ResponseEntity<Cliente> obterCliente(@PathVariable long id) {
 		List<Cliente> clientes = repositorio.findAll();
-		Cliente cliente = selecionador.selecionar(clientes, id);
+		Cliente cliente = service.selecionar(clientes, id);
 		if (cliente == null) {
 			ResponseEntity<Cliente> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			return resposta;
 		} else {
-			adicionadorLink.adicionarLink(cliente);
+			service.adicionarLink(cliente);
 			ResponseEntity<Cliente> resposta = new ResponseEntity<Cliente>(cliente, HttpStatus.FOUND);
 			return resposta;
 		}
@@ -49,7 +48,7 @@ public class ClienteControle {
 			ResponseEntity<List<Cliente>> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			return resposta;
 		} else {
-			adicionadorLink.adicionarLink(clientes);
+			service.adicionarLink(clientes);
 			ResponseEntity<List<Cliente>> resposta = new ResponseEntity<>(clientes, HttpStatus.FOUND);
 			return resposta;
 		}

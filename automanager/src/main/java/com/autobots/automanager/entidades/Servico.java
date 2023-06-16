@@ -7,27 +7,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import org.springframework.hateoas.RepresentationModel;
 
-import com.autobots.automanager.enumeracoes.TipoDocumento;
+import org.springframework.hateoas.RepresentationModel;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Data
 @Entity
 @Getter
 @Setter
-public class Documento extends RepresentationModel<Documento>  {
+public class Servico extends RepresentationModel<Servico> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(nullable = false)
-	private TipoDocumento tipo;
+	private String nome;
 	@Column(nullable = false)
-	private Date dataEmissao;
-	@Column(unique = true, nullable = false)
-	private String numero;
+	private double valor;
+	@Column
+	private String descricao;
 }

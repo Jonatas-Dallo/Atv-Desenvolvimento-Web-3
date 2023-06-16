@@ -1,15 +1,17 @@
-package com.autobots.automanager.modelos;
+package com.autobots.automanager.service;
 
 import com.autobots.automanager.controles.EndereçoController;
 import com.autobots.automanager.entidades.Endereco;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Component;
+import com.autobots.automanager.modelos.AdicionadorLink;
 
 import java.util.List;
 
 @Component
-public class AdicionadorLinkEndereço implements AdicionadorLink<Endereco> {
+public class EndereçoService implements AdicionadorLink<Endereco> {
     @Override
     public void adicionarLink(List<Endereco> lista) {
         for (Endereco endereco : lista) {
@@ -31,5 +33,15 @@ public class AdicionadorLinkEndereço implements AdicionadorLink<Endereco> {
                         .ObterEnderecos())
                 .withRel("enderecos");
         objeto.add(linkProprio);
+    }
+    
+    public Endereco selecionar(List<Endereco> enderecos, long id) {
+        Endereco selecionado = null;
+        for (Endereco endereco : enderecos) {
+            if (endereco.getId() == id) {
+                selecionado = endereco;
+            }
+        }
+        return selecionado;
     }
 }
