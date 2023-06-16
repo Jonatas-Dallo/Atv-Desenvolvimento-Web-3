@@ -90,17 +90,6 @@ public class VendaController {
 	    return resposta;
 	}
 	
-	@PutMapping("/atualizar/{id}")
-	public ResponseEntity<?> atualizarVend(@RequestBody Venda venda, @PathVariable Long id){
-			Venda vendaExistente = vendaService.findById(id);
-			if (vendaExistente == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			venda.setId(id);
-			vendaService.update(venda);
-			return new ResponseEntity<>(HttpStatus.ACCEPTED);
-	}
-	
     @PutMapping("/atualizar/{id}")
 	public ResponseEntity<?> atualizarVenda(@RequestBody Venda venda, @PathVariable Long id){
         HttpStatus status = HttpStatus.CONFLICT;
