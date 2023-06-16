@@ -95,19 +95,6 @@ public class UsuarioController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-    
-	@DeleteMapping("/deletar/{id}")
-	public ResponseEntity<?> deletar(@PathVariable Long id){
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-		Empresa empresa = empresaService.findById(id);
-		if(empresa != null) {
-			empresaService.delete(empresa);
-			status = HttpStatus.OK;
-		}
-		status = HttpStatus.NOT_FOUND;
-		ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
-		return resposta;
-	}
 
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletarr(@PathVariable Long id){
