@@ -8,6 +8,7 @@ import com.autobots.automanager.service.EndereçoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class EndereçoController{
     
     @Autowired
     private EndereçoService service;
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @GetMapping("/enderecos")
     public ResponseEntity<List<Endereco>> ObterEnderecos(){
         List<Endereco> enderecos = repositorio.findAll();
@@ -33,7 +34,7 @@ public class EndereçoController{
             return resposta;
         }
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @GetMapping("/endereco/{id}")
     public ResponseEntity<Endereco> ObterEndereco(@PathVariable Long id){
         List<Endereco> enderecos = repositorio.findAll();
@@ -47,7 +48,7 @@ public class EndereçoController{
             return resposta;
         }
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PostMapping("/endereco_enviar")
     public ResponseEntity<?> CadastrarEndereco(@RequestBody Endereco endereco) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -57,7 +58,7 @@ public class EndereçoController{
         }
         return new ResponseEntity<>(status);
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PutMapping("/atualizar")
     public ResponseEntity<?> AtualizarEndereco(@RequestBody Endereco atualizacao) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -73,7 +74,7 @@ public class EndereçoController{
         return new ResponseEntity<>(status);
 
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @DeleteMapping("/excluir")
     public ResponseEntity<?> ExcluirEndereco(@RequestBody Endereco exclusao) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

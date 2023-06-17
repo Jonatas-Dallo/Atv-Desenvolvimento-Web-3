@@ -9,6 +9,7 @@ import com.autobots.automanager.service.TelefoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class TelefoneController {
 
     @Autowired
     private TelefoneService service;
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @GetMapping("/telefones")
     public ResponseEntity<List<Telefone>> ObterTelefones(){
         List<Telefone> telefones = repositorio.findAll();
@@ -35,7 +36,7 @@ public class TelefoneController {
             return resposta;
         }
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @GetMapping("/telefone/{id}")
     public ResponseEntity<Telefone> ObterTelefone(@PathVariable Long id){
         List<Telefone> telefones = repositorio.findAll();
@@ -49,7 +50,7 @@ public class TelefoneController {
             return resposta;
         }
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PostMapping("/telefone_enviar")
     public ResponseEntity<?> CadastrarTelefone(@RequestBody Telefone telefone) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -59,7 +60,7 @@ public class TelefoneController {
         }
         return new ResponseEntity<>(status);
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PutMapping("/atualizar")
     public ResponseEntity<?> AtualizarTelefone(@RequestBody Telefone atualizacao) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -74,7 +75,7 @@ public class TelefoneController {
         }
         return new ResponseEntity<>(status);
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @DeleteMapping("/excluir")
     public ResponseEntity<?> ExcluirTelefone(@RequestBody Documento exclusao) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

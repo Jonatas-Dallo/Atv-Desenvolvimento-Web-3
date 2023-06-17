@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class ClienteControle {
 	
 	@Autowired
 	private ClienteService service;
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/cliente/{id}")
 	public ResponseEntity<Cliente> obterCliente(@PathVariable long id) {
 		List<Cliente> clientes = repositorio.findAll();
@@ -40,7 +41,7 @@ public class ClienteControle {
 			return resposta;
 		}
 	}
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/clientes")
 	public ResponseEntity<List<Cliente>> obterClientes() {
 		List<Cliente> clientes = repositorio.findAll();
@@ -53,7 +54,7 @@ public class ClienteControle {
 			return resposta;
 		}
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN','GERENTE','VENDEDOR')")
 	@PostMapping("/cliente/cadastro")
 	public ResponseEntity<?> cadastrarCliente(@RequestBody Cliente cliente) {
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -64,7 +65,7 @@ public class ClienteControle {
 		return new ResponseEntity<>(status);
 
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN','GERENTE')")
 	@PutMapping("/cliente/atualizar")
 	public ResponseEntity<?> atualizarCliente(@RequestBody Cliente atualizacao) {
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -79,7 +80,7 @@ public class ClienteControle {
 		}
 		return new ResponseEntity<>(status);
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN','GERENTE')")
 	@DeleteMapping("/cliente/excluir")
 	public ResponseEntity<?> excluirCliente(@RequestBody Cliente exclusao) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;

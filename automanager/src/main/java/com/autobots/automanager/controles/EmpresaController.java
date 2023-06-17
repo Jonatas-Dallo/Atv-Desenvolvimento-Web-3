@@ -11,6 +11,7 @@ import com.autobots.automanager.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class EmpresaController {
 	
 	@Autowired
 	private EmpresaService empresaService;
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/empresas")
 	public ResponseEntity<List<Empresa>> ObterEmpresas(){
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -42,7 +43,7 @@ public class EmpresaController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/empresa/{id}")
 	public ResponseEntity<Empresa> ObterEmpresa(@PathVariable Long id){
         Empresa empresa = empresaService.findById(id);
@@ -55,7 +56,7 @@ public class EmpresaController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PostMapping("/empresa_enviar")
     public ResponseEntity<?> CadastrarEmpresa(@RequestBody Empresa empresa) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -69,7 +70,7 @@ public class EmpresaController {
         ResponseEntity<Empresa> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> AtualizarEmpresa(@RequestBody Empresa empresa, @PathVariable Long id) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -85,7 +86,7 @@ public class EmpresaController {
         ResponseEntity<Empresa> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletar(@PathVariable Long id){
         HttpStatus status = HttpStatus.BAD_REQUEST;

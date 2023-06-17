@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class DocumentoController {
 	
 	@Autowired
 	private DocumentoService service ;
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/documentos")
 	public ResponseEntity<List<Documento>> ObterDocumentos(){
         List<Documento> documentos = repositorio.findAll();
@@ -43,7 +44,7 @@ public class DocumentoController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/documento/{id}")
 	public ResponseEntity<Documento> ObterDocumento(@PathVariable Long id){
         List<Documento> documentos = repositorio.findAll();
@@ -57,7 +58,7 @@ public class DocumentoController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PostMapping("/documento_enviar")
     public ResponseEntity<?> CadastrarDocumento(@RequestBody Documento documento) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -67,7 +68,7 @@ public class DocumentoController {
         }
         return new ResponseEntity<>(status);
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> AtualizarDocumento(@RequestBody Documento atualizacao) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -82,7 +83,7 @@ public class DocumentoController {
         }
         return new ResponseEntity<>(status);
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @DeleteMapping("/excluir")
     public ResponseEntity<?> ExcluirDocumento(@RequestBody Documento exclusao) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

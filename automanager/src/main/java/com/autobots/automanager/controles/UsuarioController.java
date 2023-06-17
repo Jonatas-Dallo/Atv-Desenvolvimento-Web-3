@@ -9,6 +9,7 @@ import com.autobots.automanager.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -29,7 +30,7 @@ public class UsuarioController {
 	
 	@Autowired
 	private VeiculoService veiculoService;
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")	
 	@GetMapping("/usuarios")
 	public ResponseEntity<List<Usuario>> ObterUsuarios(){
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -45,7 +46,7 @@ public class UsuarioController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")	
 	@GetMapping("/usuario/{id}")
 	public ResponseEntity<Usuario> ObterUsuario(@PathVariable long id){
 		Usuario usuario = usuarioService.findById(id);
@@ -58,7 +59,7 @@ public class UsuarioController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PostMapping("/usuario_enviar/{id}")
     public ResponseEntity<?> CadastrarUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -80,9 +81,9 @@ public class UsuarioController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody CredencialUsuario credencialUsuario) {
+    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody CredencialUsuarioSenha credencialUsuario) {
         HttpStatus status = HttpStatus.CONFLICT;
         Usuario usuario = usuarioService.findById(id);
         if (usuario != null) {
@@ -95,7 +96,7 @@ public class UsuarioController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletarr(@PathVariable Long id){
 		HttpStatus status = HttpStatus.BAD_REQUEST;
