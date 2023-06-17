@@ -9,6 +9,7 @@ import com.autobots.automanager.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -30,6 +31,7 @@ public class UsuarioController {
 	@Autowired
 	private VeiculoService veiculoService;
 	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")	
 	@GetMapping("/usuarios")
 	public ResponseEntity<List<Usuario>> ObterUsuarios(){
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -39,8 +41,7 @@ public class UsuarioController {
             ResponseEntity<List<Usuario>> resposta = new ResponseEntity<>(status);
             return resposta;
         } else {
-        	status = HttpStatus.FOUND;
-        	usuarioService.adicionarLink(usuario);
+        	status = HttpStatus.FOUND;;
             ResponseEntity<List<Usuario>> resposta = new ResponseEntity<List<Usuario>>(usuario, status);
             return resposta;
         }
@@ -53,12 +54,11 @@ public class UsuarioController {
             ResponseEntity<Usuario> resposta = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return resposta;
         } else {
-        	usuarioService.adicionarLink(usuario);
             ResponseEntity<Usuario> resposta = new ResponseEntity<Usuario>(usuario, HttpStatus.FOUND);
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PostMapping("/usuario_enviar/{id}")
     public ResponseEntity<?> CadastrarUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -80,9 +80,9 @@ public class UsuarioController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody CredencialUsuario credencialUsuario) {
+    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody CredencialUsuarioSenha credencialUsuario) {
         HttpStatus status = HttpStatus.CONFLICT;
         Usuario usuario = usuarioService.findById(id);
         if (usuario != null) {
@@ -95,7 +95,7 @@ public class UsuarioController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletarr(@PathVariable Long id){
 		HttpStatus status = HttpStatus.BAD_REQUEST;

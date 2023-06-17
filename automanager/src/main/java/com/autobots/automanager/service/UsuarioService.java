@@ -1,43 +1,17 @@
 package com.autobots.automanager.service;
 
 import com.autobots.automanager.entidades.Usuario;
-import com.autobots.automanager.controles.UsuarioController;
-import com.autobots.automanager.modelos.AdicionadorLink;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuarioService implements AdicionadorLink<Usuario> {
+public class UsuarioService {
 
     @Autowired
     private UsuarioRepositorio repositorio;
-    
-	@Override
-	public void adicionarLink( List<Usuario> lista ) {
-		for (Usuario cliente : lista) {
-			Link linkUsuario =  WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(UsuarioController.class)
-							.ObterUsuario(cliente.getId()))
-					.withSelfRel();
-			cliente.add(linkUsuario);
-		}
-	}
-	
-	@Override
-	public void adicionarLink( Usuario usuario ) {
-			Link linkUsuario =  WebMvcLinkBuilder
-					.linkTo(WebMvcLinkBuilder
-							.methodOn(UsuarioController.class)
-							.ObterUsuarios())
-					.withRel("Todos Veiculos");
-			usuario.add(linkUsuario);
-	}
 
     public Long create(Usuario usuario) {
         return repositorio.save(usuario).getId();

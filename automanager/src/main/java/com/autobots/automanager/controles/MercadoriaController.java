@@ -11,6 +11,7 @@ import com.autobots.automanager.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -31,6 +32,7 @@ public class MercadoriaController {
 	@Autowired
 	EmpresaService empresaService;
 	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/mercadorias")
 	public ResponseEntity<List<Mercadoria>> ObterMercadorias(){
 		List<Mercadoria> mercadoria = mercadoriaService.findAll();
@@ -43,6 +45,7 @@ public class MercadoriaController {
 		return resposta;
 	}
 	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/mercadoria/{id}")
 	public ResponseEntity<Mercadoria> ObterMercadoria(@PathVariable long id){
 		Mercadoria mercadoria = mercadoriaService.findById(id);
@@ -55,7 +58,7 @@ public class MercadoriaController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
 	@PostMapping("/mercadoria_enviar/{id}")
 	public ResponseEntity<?> cadastrarMercadoria(@RequestBody Mercadoria mercadoria, @PathVariable Long id){
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -85,7 +88,7 @@ public class MercadoriaController {
 		ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
 		return resposta;
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizarMercadoria(@RequestBody Mercadoria mercadoria, @PathVariable Long id) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -101,7 +104,7 @@ public class MercadoriaController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-    
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletar(@PathVariable Long id){
         HttpStatus status = HttpStatus.BAD_REQUEST;

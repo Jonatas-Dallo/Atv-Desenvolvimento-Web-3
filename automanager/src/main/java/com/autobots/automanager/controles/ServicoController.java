@@ -10,6 +10,7 @@ import com.autobots.automanager.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,7 +28,7 @@ public class ServicoController {
 
 	@Autowired
 	EmpresaService empresaService;
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/servicos")
 	public ResponseEntity<List<Servico>> ObterServicos(){
         List<Servico> servicos = servicoService.findAll();
@@ -40,7 +41,7 @@ public class ServicoController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN') or hasAnyAuthority('ROLE_VENDEDOR')")
 	@GetMapping("/servico/{id}")
 	public ResponseEntity<Servico> ObterServico(@PathVariable long id){
 		HttpStatus status = HttpStatus.CONFLICT;
@@ -56,7 +57,7 @@ public class ServicoController {
             return resposta;
         }
 	}
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PostMapping("/servico_enviar")
     public ResponseEntity<?> CadastrarServico(@RequestBody Servico servico, @PathVariable Long id ) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -71,7 +72,7 @@ public class ServicoController {
         ResponseEntity<Servico> resposta = new ResponseEntity<>(status);
         return resposta;
     }	
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> Atualizar(@RequestBody Servico servico , @PathVariable Long id) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -86,7 +87,7 @@ public class ServicoController {
         ResponseEntity<Mercadoria> resposta = new ResponseEntity<>(status);
         return resposta;
     }
-	
+	@PreAuthorize("hasAnyAuthority('ROLE_GERENTE') or hasAnyAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/deletar/{id}")
 	public ResponseEntity<?> deletar(@PathVariable Long id){
 		Servico servico_escolhido = servicoService.findById(id);

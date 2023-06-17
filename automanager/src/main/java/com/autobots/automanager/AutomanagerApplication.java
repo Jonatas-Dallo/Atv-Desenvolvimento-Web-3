@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.autobots.automanager.entidades.*;
 import com.autobots.automanager.enumeracoes.*;
-import com.autobots.automanager.repositorios.*;
+import com.autobots.automanager.repositorios.EmpresaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,9 +14,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
+import com.autobots.automanager.repositorios.*;
+
 @SpringBootApplication
 public class AutomanagerApplication{
-
 
 
 	public static void main(String[] args) {
@@ -99,7 +100,7 @@ public class AutomanagerApplication{
 			Usuario funcionario = new Usuario();
 			funcionario.setNome("Pedro Alcântara de Bragança e Bourbon");
 			funcionario.setNomeSocial("Dom Pedro");
-			funcionario.getPerfis().add(PerfilUsuario.Funcionario);
+			funcionario.getPerfis().add(PerfilUsuario.ROLE_GERENTE);
 
 			Email emailFuncionario = new Email();
 			emailFuncionario.setEndereco("a@a.com");
@@ -131,7 +132,7 @@ public class AutomanagerApplication{
 
 			funcionario.getDocumentos().add(cpf2);
 
-			CredencialUsuario credencialFuncionario = new CredencialUsuario();
+			CredencialUsuarioSenha credencialFuncionario = new CredencialUsuarioSenha();
 			credencialFuncionario.setInativo(false);
 			credencialFuncionario.setNomeUsuario("dompedrofuncionario");
 			credencialFuncionario.setSenha("123456");
@@ -143,14 +144,14 @@ public class AutomanagerApplication{
 			Usuario fornecedor = new Usuario();
 			fornecedor.setNome("Componentes varejo de partes automotivas ltda");
 			fornecedor.setNomeSocial("Loja do carro, vendas de componentes automotivos");
-			fornecedor.getPerfis().add(PerfilUsuario.Fornecedor);
+			fornecedor.getPerfis().add(PerfilUsuario.ROLE_CLIENTE);
 
 			Email emailFornecedor = new Email();
 			emailFornecedor.setEndereco("f@f.com");
 
 			fornecedor.getEmails().add(emailFornecedor);
 
-			CredencialUsuario credencialFornecedor = new CredencialUsuario();
+			CredencialUsuarioSenha credencialFornecedor = new CredencialUsuarioSenha();
 			credencialFornecedor.setInativo(false);
 			credencialFornecedor.setNomeUsuario("dompedrofornecedor");
 			credencialFornecedor.setSenha("123456");
@@ -194,7 +195,7 @@ public class AutomanagerApplication{
 			Usuario cliente2 = new Usuario();
 			cliente2.setNome("Pedro Alcântara de Bragança e Bourbon");
 			cliente2.setNomeSocial("Dom pedro cliente");
-			cliente2.getPerfis().add(PerfilUsuario.Cliente);
+			cliente2.getPerfis().add(PerfilUsuario.ROLE_CLIENTE);
 
 			Email emailCliente = new Email();
 			emailCliente.setEndereco("c@c.com");
@@ -208,7 +209,7 @@ public class AutomanagerApplication{
 
 			cliente2.getDocumentos().add(cpfCliente);
 
-			CredencialUsuario credencialCliente = new CredencialUsuario();
+			CredencialUsuarioSenha credencialCliente = new CredencialUsuarioSenha();
 			credencialCliente.setInativo(false);
 			credencialCliente.setNomeUsuario("dompedrocliente");
 			credencialCliente.setSenha("123456");
