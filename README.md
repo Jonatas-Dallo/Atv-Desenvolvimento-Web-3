@@ -1,6 +1,6 @@
-# Repositorio para as atividades de Desenvolvimento Web
+# Repositorio para as atividades de Desenvolvimento Web 
 
-## Atalho para as atividades ##
+## Atalho para as atividades de java ##
 
 - Atividade 1 (Concluído) -> [Atvi](https://github.com/Jonatas-Dallo/Atv-Desenvolvimento-Web-3/tree/Atvi) <br>
 - Atividade 2 (Concluído) -> [Atvii](https://github.com/Jonatas-Dallo/Atv-Desenvolvimento-Web-3/tree/Atvii) <br>
